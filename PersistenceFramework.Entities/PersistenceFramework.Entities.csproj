@@ -49,8 +49,14 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
-copy /y $(ProjectDir)bin\debug\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug
+copy /y $(ProjectDir)bin\debug\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\dll
 :RELEASE
-copy /y $(ProjectDir)bin\release\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\release</PostBuildEvent>
+copy /y $(ProjectDir)bin\release\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\dll</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
+    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll
+:RELEASE
+    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll</PreBuildEvent>
   </PropertyGroup>
 </Project>

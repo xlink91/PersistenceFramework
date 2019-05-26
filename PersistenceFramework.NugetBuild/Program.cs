@@ -7,21 +7,29 @@ using System.Threading.Tasks;
 
 namespace PersistenceFramework.NugetBuild
 {
-    class Program
+    public class Program
     {
         static readonly string fileName = @"Tools\nuget.exe";
         static readonly string arguments = @"pack Manifest\PersistenceFramework.nuspec";
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo(fileName, arguments);   
             processStartInfo.RedirectStandardOutput = true;
             processStartInfo.RedirectStandardError = true;
             processStartInfo.UseShellExecute = false;
+
+            string cmd = fileName + " " + arguments;
+            Console.WriteLine(cmd);
             try
             {
                 using (Process execProcess = Process.Start(processStartInfo))
                 {
-                    execProcess.WaitForExit();
+                    do
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(0.2));
+                        Console.WriteLine(await execProcess.StandardOutput.ReadLineAsync());
+                    } while (!execProcess.HasExited);
+
                 }
             }catch(Exception ex)
             {

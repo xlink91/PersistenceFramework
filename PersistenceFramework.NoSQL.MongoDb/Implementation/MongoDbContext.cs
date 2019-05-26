@@ -51,7 +51,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
                     return propertyInfo.GetValue(this);
             }
             throw new NotDeclaredEntityException($"{type.Name} are not declare in context as IMongoCollection<{type.Name}>",
-                new Exception("You most declare the entity as public IMongoCollection<> property"));
+                new Exception("You most declare the entity as private IMongoCollection<> property"));
         }
 
         protected object GetCollection(Type type)
@@ -63,7 +63,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
                     return propertyInfo.GetValue(this);
             }
             throw new NotDeclaredEntityException($"{type.Name} are not declare in context as IMongoCollection<{type.Name}>",
-                new Exception("You most declare the entity as public IMongoCollection<> property"));
+                new Exception("You most declare the entity as private IMongoCollection<> property"));
         }
 
         private void CreateCollections()

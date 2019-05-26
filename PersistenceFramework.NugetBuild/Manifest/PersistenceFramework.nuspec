@@ -56,6 +56,6 @@
 
     <!-- A readme.txt to display when the package is installed -->
     <files>
-		<file src="..\PersistenceFramework*.dll" target="lib\net461" />
+		<file src="..\dll\PersistenceFramework*.dll" target="lib\net461" />
     </files>
 </package>

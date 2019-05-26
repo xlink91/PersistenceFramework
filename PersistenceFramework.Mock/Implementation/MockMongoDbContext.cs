@@ -38,30 +38,30 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
         protected IEnumerable<object> GetList(Type type)
         {
             Type DbContextType = this.GetType();
-            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties())
+            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (propertyInfo.PropertyType.GetInterface(typeof(IEnumerable<>).Name) != null && propertyInfo.Name == type.Name)
                     return (IEnumerable<object>)propertyInfo.GetValue(this);
             }
             throw new NotDeclaredEntityException($"{type.Name} are not declare in context as ICollection<{type.Name}>",
-                new Exception("You most declare the entity as public ICollection<> property"));
+                new Exception("You most declare the entity as private ICollection<> property"));
         }
 
         protected object GetCollection(Type type)
         {
             Type DbContextType = this.GetType();
-            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties())
+            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (propertyInfo.PropertyType.Name == typeof(ICollection<>).Name && propertyInfo.Name == type.Name)
                     return propertyInfo.GetValue(this);
             }
             throw new NotDeclaredEntityException($"{type.Name} are not declare in context as ICollection<{type.Name}>",
-                new Exception("You most declare the entity as public ICollection<> property"));
+                new Exception("You most declare the entity as private ICollection<> property"));
         }
 
         protected void UpdateCollection(Type type, object collection)
         {
-            PropertyInfo prop = this.GetType().GetProperty(type.Name);
+            PropertyInfo prop = this.GetType().GetProperty(type.Name, BindingFlags.NonPublic | BindingFlags.Instance);
             prop.SetValue(this, collection);
         }
 
