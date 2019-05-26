@@ -47,8 +47,8 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.8.1\lib\net452\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -88,14 +88,18 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
-copy /y $(ProjectDir)bin\debug\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\dll
+    COPY /y $(ProjectDir)bin\debug\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\dll
+    GOTO END
 :RELEASE
-copy /y $(ProjectDir)bin\release\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\dll</PostBuildEvent>
+    COPY /y $(ProjectDir)bin\release\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\dll
+:END</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
     IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll
+    GOTO END
 :RELEASE
-    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll</PreBuildEvent>
+    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll
+:END</PreBuildEvent>
   </PropertyGroup>
 </Project>
