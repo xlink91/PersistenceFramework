@@ -45,7 +45,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         protected object GetList(Type type)
         {
             Type DbContextType = this.GetType();
-            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties())
+            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (propertyInfo.PropertyType.Name == typeof(IMongoCollection<>).Name && propertyInfo.PropertyType.GenericTypeArguments.First().Name == type.Name)
                     return propertyInfo.GetValue(this);
@@ -57,7 +57,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         protected object GetCollection(Type type)
         {
             Type DbContextType = this.GetType();
-            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties())
+            foreach (PropertyInfo propertyInfo in DbContextType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (propertyInfo.PropertyType.Name == typeof(IMongoCollection<>).Name && propertyInfo.PropertyType.GenericTypeArguments.First().Name == type.Name)
                     return propertyInfo.GetValue(this);
@@ -75,7 +75,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
                 foreach (string colName in collectionNameCursor.Current)
                     collectionsName.Add(colName);
 
-            foreach (PropertyInfo prop in GetType().GetProperties())
+            foreach (PropertyInfo prop in GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
                 if (prop.PropertyType.Name != typeof(IMongoCollection<>).Name)
                     throw new Exception($"Property {prop.Name} is not {typeof(IMongoCollection<>).Name}<> type");
