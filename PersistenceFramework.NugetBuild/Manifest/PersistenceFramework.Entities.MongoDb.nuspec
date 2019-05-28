@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <!-- The identifier that must be unique within the hosting gallery -->
-        <id>PersistenceFramework</id>
+        <id>PersistenceFramework.Entities.MongoDB</id>
 
         <!-- The package version number that is used when resolving dependencies -->
         <version>1.0.0</version>
@@ -39,7 +39,7 @@
             The description can be used in package manager UI. Note that the
             nuget.org gallery uses information you add in the portal. 
         -->
-        <description>Persistence framework and mocking, implemented MongoDb</description>
+        <description>Persistence framework and mocking</description>
 
         <!-- Copyright information -->
         <copyright></copyright>
@@ -49,13 +49,13 @@
 
         <!-- Dependencies are automatically installed when the package is installed -->
         <dependencies>
-			  <dependency id="MongoDB.Bson" version="2.8.1"/>
-			  <dependency id="MongoDB.Driver" version="2.8.1"/>
+			    <dependency id="MongoDB.Bson" version="2.8.1"/>
+          <dependency id="PersistenceFramework.Entities" version="1.0.0"/>
         </dependencies>
     </metadata>
 
     <!-- A readme.txt to display when the package is installed -->
     <files>
-		<file src="..\dll\PersistenceFramework*.dll" target="lib\net461" />
+      <file src="..\dll\PersistenceFramework.Entities.NoSQL.Mongo.dll" target="lib\net461" />
     </files>
 </package>
