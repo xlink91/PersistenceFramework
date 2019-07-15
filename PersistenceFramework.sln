@@ -39,6 +39,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{88E64686
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenceFramework.NugetBuild", "PersistenceFramework.NugetBuild\PersistenceFramework.NugetBuild.csproj", "{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{5C8FAA30-3EEF-4FE3-979F-E75A9AB123FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenceFramework.Util", "PersistenceFramework.Util\PersistenceFramework.Util.csproj", "{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,10 @@ Global
 		{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +106,7 @@ Global
 		{96439D64-765A-440B-97C4-42E0C3A64BE5} = {B496322F-0501-4A21-9DCF-B929480B41C0}
 		{AB5897D6-4723-4E81-8451-1A23DF8A7963} = {334D1578-44E3-4208-8C60-8C7732B3B57E}
 		{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F} = {88E64686-6C54-41E4-B5A0-7B4B0C7E9E5D}
+		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1} = {5C8FAA30-3EEF-4FE3-979F-E75A9AB123FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A2E7C27-89E2-485E-AA59-8CFF0BE6F938}

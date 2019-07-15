@@ -77,6 +77,10 @@
       <Project>{12456a34-88d2-465c-8404-8c8cc14cc6ad}</Project>
       <Name>PersistenceFramework.Exceptions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PersistenceFramework.Util\PersistenceFramework.Util.csproj">
+      <Project>{adac77cc-662b-4229-8e2e-cf8af4ff50f1}</Project>
+      <Name>PersistenceFramework.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PersistenceFramework\PersistenceFramework.csproj">
       <Project>{3b821fa3-1a06-4b6f-b4a3-1163764ab6fe}</Project>
       <Name>PersistenceFramework</Name>

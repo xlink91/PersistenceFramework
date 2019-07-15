@@ -1,15 +1,13 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using PersistenceFramework.Contract;
-using PersistenceFramework.Entities.BaseEntityContract;
 using PersistenceFramework.Exceptions;
+using PersistenceFramework.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PersistenceFramework.NoSQL.MongoDb.Implementation
 {
@@ -28,14 +26,14 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         }
 
         public void Add<TEntity>(TEntity entity)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             IMongoCollection<TEntity> entityCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
             entityCollection.WithWriteConcern(WriteConcern.Acknowledged).InsertOne(entity);
         }
 
         public IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> filter)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetList(typeof(TEntity));
             IEnumerable<TEntity> entityCollection = mongoCollection.Find(filter).ToEnumerable();
@@ -88,17 +86,17 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         }
 
         public void Update<TEntity>(TEntity entity)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
-            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(x => x.Id == entity.Id, entity);
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(DynamicLambdaBuilder.GetIdLE(entity), entity);
         }
 
         public void Remove<TEntity>(TEntity entity)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
-            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).DeleteOne(x => x.Id == entity.Id);
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).DeleteOne(DynamicLambdaBuilder.GetIdLE(entity));
         }
 
         public void RemoveDb()

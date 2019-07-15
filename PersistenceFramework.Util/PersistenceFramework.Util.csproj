@@ -4,14 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ACDFBFF4-3801-4D88-A644-F48C5A3091CF}</ProjectGuid>
+    <ProjectGuid>{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PersistenceFramework.Entities.NoSQL.Mongo</RootNamespace>
-    <AssemblyName>PersistenceFramework.Entities.NoSQL.Mongo</AssemblyName>
+    <RootNamespace>PersistenceFramework.Util</RootNamespace>
+    <AssemblyName>PersistenceFramework.Util</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MongoDB.Bson.2.8.1\lib\net452\MongoDB.Bson.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,34 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoBaseEntityDefinition\MongoDbBaseEntityDefinition.cs" />
-    <Compile Include="MongoKeyDefinition\MongoDbKeyHandlerDefinition.cs" />
+    <Compile Include="DynamicLambdaBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PersistenceFramework.Entities\PersistenceFramework.Entities.csproj">
-      <Project>{fdc6200f-6642-4a91-96ad-b468c09d3912}</Project>
-      <Name>PersistenceFramework.Entities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
-    COPY /y $(ProjectDir)bin\debug\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\dll
-    GOTO END
-:RELEASE
-    COPY /y $(ProjectDir)bin\release\PersistenceFramework*.dll $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\dll
-:END</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
-    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\debug\Dll
-    GOTO END
-:RELEASE
-    IF NOT EXIST $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll mkdir $(SolutionDir)PersistenceFramework.NugetBuild\bin\release\Dll
-:END</PreBuildEvent>
-  </PropertyGroup>
 </Project>

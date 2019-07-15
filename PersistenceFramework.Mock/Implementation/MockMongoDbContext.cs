@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using PersistenceFramework.Contract;
-using PersistenceFramework.Entities.BaseEntityContract;
 using PersistenceFramework.Exceptions;
+using PersistenceFramework.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +20,16 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
         }
 
         public void Add<TEntity>(TEntity entity)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             ICollection<TEntity> entityCollection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
-            if(AutogenerateId)
-                entity.Id = ObjectId.GenerateNewId();
+            if (AutogenerateId)
+                entity.GetType().GetProperty("Id").SetValue(entity, ObjectId.GenerateNewId());
             entityCollection.Add(entity);
         }
 
         public IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class 
         {
             IEnumerable<TEntity> entityCollection = (IEnumerable<TEntity>)GetList(typeof(TEntity));
             return entityCollection?.Where(cond.Compile());
@@ -66,14 +66,14 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
         }
 
         public void Update<TEntity>(TEntity entity)
-            where TEntity : class, IKeyIdentity<ObjectId>
+            where TEntity : class
         {
             ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
             List<TEntity> nCollection = new List<TEntity>();
 
             foreach (var _entity in collection)
             {
-                if (_entity.Id == entity.Id)
+                if (_entity.GetType().GetProperty("Id").GetValue(_entity).Equals(entity.GetType().GetProperty("Id").GetValue(entity)))
                     continue;
                 nCollection.Add(_entity);
             }
@@ -84,7 +84,7 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
         void IDbContext<ObjectId>.Remove<TEntity>(TEntity entity)
         {
             ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
-            TEntity entityStored = collection.Where(x => x.Id == entity.Id).SingleOrDefault();
+            TEntity entityStored = collection.Where(DynamicLambdaBuilder.GetIdLE(entity).Compile()).SingleOrDefault();
             collection.Remove(entityStored);
         }
     }

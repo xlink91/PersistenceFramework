@@ -8,6 +8,6 @@ namespace PersistenceFramework.ProjectInfo
 {
     public class ProjectInfo
     {
-        public const string version = "1.0.0";
+        public const string version = "2.0.0";
     }
 }
