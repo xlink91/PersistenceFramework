@@ -16,6 +16,12 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         private IMongoClient MongoClient { get; set; }
         private IMongoDatabase MongoDatabase { get; set; }
         private string DatabaseName { get; set; }
+        
+        public MongoDbContext(string databaseName, string url)
+            : this(databaseName, new MongoClient(url))
+        {
+
+        }
 
         public MongoDbContext(string databaseName, IMongoClient mongoClient)
         {
