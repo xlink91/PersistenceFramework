@@ -5,7 +5,7 @@
         <id>PersistenceFramework.Context.MongoDB</id>
 
         <!-- The package version number that is used when resolving dependencies -->
-        <version>2.0.0</version>
+        <version>2.0.1</version>
 
         <!-- Authors contain text that appears directly on the gallery -->
         <authors>DHT</authors>
@@ -58,5 +58,6 @@
     <!-- A readme.txt to display when the package is installed -->
     <files>
       <file src="..\dll\PersistenceFramework.NoSQL.MongoDb.dll" target="lib\net461" />
+      <file src="..\dll\PersistenceFramework.Util.dll" target="lib\net461" />
     </files>
 </package>
