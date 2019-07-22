@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace PersistenceFramework.NoSQL.MongoDb.Implementation
 {
-    public class MongoDbContext : IDbContext<ObjectId>
+    public class MongoDbContext : IDbContext
     {
         private IMongoClient MongoClient { get; set; }
         private IMongoDatabase MongoDatabase { get; set; }

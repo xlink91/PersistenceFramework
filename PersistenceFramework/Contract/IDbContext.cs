@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace PersistenceFramework.Contract
 {
-    public interface IDbContext<TKey>
+    public interface IDbContext
     {
         IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
             where TEntity : class;

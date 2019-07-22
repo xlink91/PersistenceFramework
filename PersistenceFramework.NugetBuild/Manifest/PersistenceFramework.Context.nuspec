@@ -5,7 +5,7 @@
         <id>PersistenceFramework.Context</id>
 
         <!-- The package version number that is used when resolving dependencies -->
-        <version>2.0.0</version>
+        <version>3.0.0</version>
 
         <!-- Authors contain text that appears directly on the gallery -->
         <authors>DHT</authors>
@@ -49,7 +49,6 @@
 
         <!-- Dependencies are automatically installed when the package is installed -->
         <dependencies>
-          <dependency id="PersistenceFramework.Entities" version="1.0.0" />
         </dependencies>
     </metadata>
 

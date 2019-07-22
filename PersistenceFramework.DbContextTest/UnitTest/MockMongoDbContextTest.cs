@@ -13,7 +13,7 @@ namespace PersistenceFramework.DbContextTest.UnitTest
     [TestClass]
     public class MockMongoDbContextTest
     {
-        private IDbContext<ObjectId> DbMock;
+        private IDbContext DbMock;
 
         [TestMethod]
         public void GetList_NotICollectionExist_Exception()

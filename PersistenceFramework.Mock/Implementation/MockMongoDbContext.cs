@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace PersistenceFramework.Mock.NoSQL.MongoDb
 {
-    public class MockMongoDbContext : IDbContext<ObjectId>
+    public class MockMongoDbContext : IDbContext
     {
         private bool AutogenerateId { get; set; }
 
@@ -81,7 +81,8 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
             UpdateCollection(typeof(TEntity), nCollection);
         }
 
-        void IDbContext<ObjectId>.Remove<TEntity>(TEntity entity)
+        public void Remove<TEntity>(TEntity entity)
+            where TEntity : class
         {
             ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
             TEntity entityStored = collection.Where(DynamicLambdaBuilder.GetIdLE(entity).Compile()).SingleOrDefault();
