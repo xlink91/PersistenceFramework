@@ -14,7 +14,7 @@ namespace PersistenceFramework.DbContextTest.Integration
         [TestMethod]
         public void Insert_1000_document()
         {
-            CustomMongoDbContext db = new CustomMongoDbContext("PFrameworkTest", "192.168.250.132:27017");
+            CustomMongoDbContext db = new CustomMongoDbContext("PFrameworkTest", "localhost:27017");
             //Info info = null; 
             //for(int i = 0; i < 1000; ++i)
             //{
