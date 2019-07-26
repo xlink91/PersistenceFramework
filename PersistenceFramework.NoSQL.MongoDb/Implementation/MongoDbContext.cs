@@ -18,7 +18,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         private string DatabaseName { get; set; }
         
         public MongoDbContext(string databaseName, string url)
-            : this(databaseName, new MongoClient(url))
+            : this(databaseName, new MongoClient("mongodb://" + url))
         {
 
         }
@@ -38,11 +38,11 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             entityCollection.WithWriteConcern(WriteConcern.Acknowledged).InsertOne(entity);
         }
 
-        public IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> filter)
+        public IQueryable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> filter)
             where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetList(typeof(TEntity));
-            IEnumerable<TEntity> entityCollection = mongoCollection.Find(filter).ToEnumerable();
+            IQueryable<TEntity> entityCollection = mongoCollection.AsQueryable().Where(filter);
             return entityCollection;
         }
 

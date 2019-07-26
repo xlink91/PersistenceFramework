@@ -28,11 +28,11 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
             entityCollection.Add(entity);
         }
 
-        public IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
+        public IQueryable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
             where TEntity : class 
         {
-            IEnumerable<TEntity> entityCollection = (IEnumerable<TEntity>)GetList(typeof(TEntity));
-            return entityCollection?.Where(cond.Compile());
+            IQueryable<TEntity> entityCollection = ((ICollection<TEntity>)GetList(typeof(TEntity))).AsQueryable();
+            return entityCollection?.Where(cond);
         }
 
         protected IEnumerable<object> GetList(Type type)

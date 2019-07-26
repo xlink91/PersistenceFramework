@@ -82,7 +82,7 @@ namespace PersistenceFramework.DbContextTest.UnitTest
                 Phone = "+589 93 956 487"
             };
             Enumerable.Range(0, 4).ToList().ForEach(x => DbMock.Add(infoEntity));
-            IEnumerable<InfoEntity> populatedMyEntitites = DbMock.GetEntity<InfoEntity>(x => true);
+            IEnumerable<InfoEntity> populatedMyEntitites = DbMock.GetEntity<InfoEntity>(x => true).ToList();
             Assert.AreEqual(populatedMyEntitites.Count(), 4);
         }
 

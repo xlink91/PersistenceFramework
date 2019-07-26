@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace PersistenceFramework.Contract
 {
     public interface IDbContext
     {
-        IEnumerable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
+        IQueryable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> cond)
             where TEntity : class;
         void Add<TEntity>(TEntity entity)
             where TEntity : class;
