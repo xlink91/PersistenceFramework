@@ -2,7 +2,7 @@
 The MongoDbContext need that every entity contains a ```public ObjectId Id { get; set; }``` property. 
 You most declare each document collection like a ```private IMongoCollection<Entity> Entity { get; set; }``` property.
 
-Persistence Framework example for MongoDb
+Persistence Framework simple example for MongoDb
 
     class Program
     {
