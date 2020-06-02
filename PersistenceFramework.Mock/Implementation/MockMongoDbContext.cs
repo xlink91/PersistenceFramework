@@ -137,7 +137,7 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
             where TEntity : class
         {
             ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
-            TEntity entityStored = collection.Where(DynamicLambdaBuilder.GetIdLE(entity).Compile()).SingleOrDefault();
+            TEntity entityStored = collection.SingleOrDefault(DynamicLambdaBuilder.GetIdLE(entity).Compile());
             collection.Remove(entityStored);
         }
 
