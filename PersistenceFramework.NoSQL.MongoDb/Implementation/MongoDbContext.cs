@@ -108,6 +108,15 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(DynamicLambdaBuilder.GetIdLE(entity), entity);
         }
 
+        public void Update<TEntity>(Expression<Func<TEntity, bool>> cond, TEntity entity)
+            where TEntity : class
+        {
+            IMongoCollection<TEntity> mongoCollection =
+                (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).
+                ReplaceOne(cond, entity);
+        }
+
         public void Remove<TEntity>(TEntity entity)
             where TEntity : class
         {

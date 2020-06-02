@@ -15,6 +15,8 @@ namespace PersistenceFramework.Contract
             where TEntity : class;
         void Update<TEntity>(TEntity entity)
             where TEntity : class;
+        void Update<TEntity>(Expression<Func<TEntity, bool>> cond, TEntity entity)
+            where TEntity : class;
         void Remove<TEntity>(TEntity entity)
             where TEntity : class;
         void Remove<TEntity>(Expression<Func<TEntity, bool>> cond)

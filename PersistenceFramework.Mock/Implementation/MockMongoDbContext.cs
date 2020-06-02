@@ -102,13 +102,33 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
         {
             ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
             List<TEntity> nCollection = new List<TEntity>();
-
+            PropertyInfo keyPropertyInfo = AutogenerateId ?
+                DynamicLambdaBuilder.GetKeyProperty<TEntity>(typeof(PersistenceIdAttribute)) : 
+                entity.GetType().GetProperty("Id")
+                ;
+                
             foreach (var _entity in collection)
             {
-                if (_entity.GetType().GetProperty("Id").GetValue(_entity).Equals(entity.GetType().GetProperty("Id").GetValue(entity)))
-                    continue;
+                if (keyPropertyInfo.GetValue(entity).Equals(keyPropertyInfo.GetValue(_entity)))
+                        continue;
                 nCollection.Add(_entity);
             }
+            nCollection.Add(entity);
+            UpdateCollection(typeof(TEntity), nCollection);
+        }
+
+        public void Update<TEntity>(Expression<Func<TEntity, bool>> cond, TEntity entity) where TEntity : class
+        {
+            ICollection<TEntity> collection = (ICollection<TEntity>)GetCollection(typeof(TEntity));
+            List<TEntity> nCollection = new List<TEntity>();
+            foreach (var _entity in collection)
+            {
+                if (cond.Compile()(_entity))
+                    continue;
+                
+                nCollection.Add(_entity);
+            }
+
             nCollection.Add(entity);
             UpdateCollection(typeof(TEntity), nCollection);
         }
