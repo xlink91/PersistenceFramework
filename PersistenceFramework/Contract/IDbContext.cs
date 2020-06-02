@@ -11,9 +11,13 @@ namespace PersistenceFramework.Contract
             where TEntity : class;
         void Add<TEntity>(TEntity entity)
             where TEntity : class;
+        void Add<TEntity>(IEnumerable<TEntity> entityList)
+            where TEntity : class;
         void Update<TEntity>(TEntity entity)
             where TEntity : class;
         void Remove<TEntity>(TEntity entity)
+            where TEntity : class;
+        void Remove<TEntity>(Expression<Func<TEntity, bool>> cond)
             where TEntity : class;
     }
 }
