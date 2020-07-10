@@ -136,7 +136,8 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             MongoClient.DropDatabase(DatabaseName);
         }
 
-        public IQueryable<TEntity> AsQueriable<TEntity>()
+        public IQueryable<TEntity> AsQueryable<TEntity>()
+            where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
             return mongoCollection.AsQueryable();

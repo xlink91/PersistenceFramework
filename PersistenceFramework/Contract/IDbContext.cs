@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -18,5 +19,9 @@ namespace PersistenceFramework.Contract
             where TEntity : class;
         void Remove<TEntity>(TEntity entity)
             where TEntity : class;
+        void Remove<TEntity>(Expression<Func<TEntity, bool>> cond)
+            where TEntity : class;
+        IQueryable<TEntity> AsQueryable<TEntity>()
+            where TEntity: class;
     }
 }
