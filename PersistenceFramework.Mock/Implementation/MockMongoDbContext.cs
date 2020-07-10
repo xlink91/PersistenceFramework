@@ -88,5 +88,11 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
             TEntity entityStored = collection.Where(DynamicLambdaBuilder.GetIdLE(entity).Compile()).SingleOrDefault();
             collection.Remove(entityStored);
         }
+
+        public IQueryable<TEntity> AsQueriable<TEntity>()
+        {
+            return ((ICollection<TEntity>)GetCollection(typeof(TEntity))).
+                AsQueryable();
+        }
     }
 }

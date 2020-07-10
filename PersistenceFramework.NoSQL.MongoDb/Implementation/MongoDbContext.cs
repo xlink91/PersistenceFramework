@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using PersistenceFramework.Contract;
 using PersistenceFramework.Exceptions;
 using PersistenceFramework.Util;
@@ -108,6 +107,12 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         public void RemoveDb()
         {
             MongoClient.DropDatabase(DatabaseName);
+        }
+
+        public IQueryable<TEntity> AsQueriable<TEntity>()
+        {
+            IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            return mongoCollection.AsQueryable();
         }
     }
 }
