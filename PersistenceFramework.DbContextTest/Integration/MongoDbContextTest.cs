@@ -1,13 +1,13 @@
-﻿using System;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MongoDB.Driver;
+using PersistenceFramework.NoSQL.MongoDb.Implementation;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PersistenceFramework.NoSQL.MongoDb.Implementation;
-using MongoDB.Driver;
 
 namespace PersistenceFramework.DbContextTest.Integration
 {
+    [Ignore]
     [TestClass]
     public class MongoDbContextTest
     {

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using PersistenceFramework.Attributes;
 using PersistenceFramework.Contract;
 using PersistenceFramework.Exceptions;
 using PersistenceFramework.Util;
@@ -35,6 +36,12 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         {
             IMongoCollection<TEntity> entityCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
             entityCollection.WithWriteConcern(WriteConcern.Acknowledged).InsertOne(entity);
+        }
+
+        public void Add<TEntity>(IEnumerable<TEntity> entityList) where TEntity : class
+        {
+            IMongoCollection<TEntity> entityCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            entityCollection.WithWriteConcern(WriteConcern.Acknowledged).InsertMany(entityList);
         }
 
         public IQueryable<TEntity> GetEntity<TEntity>(Expression<Func<TEntity, bool>> filter)
@@ -74,9 +81,13 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             HashSet<string> collectionsName = new HashSet<string>();
             IAsyncCursor<string> collectionNameCursor = MongoDatabase.ListCollectionNames();
 
-            for (; collectionNameCursor.MoveNext();)
+            while(collectionNameCursor.MoveNext())
+            {
                 foreach (string colName in collectionNameCursor.Current)
+                {
                     collectionsName.Add(colName);
+                }
+            }
 
             foreach (PropertyInfo prop in GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))
             {
@@ -97,11 +108,27 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(DynamicLambdaBuilder.GetIdLE(entity), entity);
         }
 
+        public void Update<TEntity>(Expression<Func<TEntity, bool>> cond, TEntity entity)
+            where TEntity : class
+        {
+            IMongoCollection<TEntity> mongoCollection =
+                (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).
+                ReplaceOne(cond, entity);
+        }
+
         public void Remove<TEntity>(TEntity entity)
             where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
-            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).DeleteOne(DynamicLambdaBuilder.GetIdLE(entity));
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).DeleteOne(DynamicLambdaBuilder.GetIdLE(entity, typeof(PersistenceIdAttribute)));
+        }
+
+        public void Remove<TEntity>(Expression<Func<TEntity, bool>> cond)
+            where TEntity : class
+        {
+            IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            mongoCollection.DeleteMany(cond);
         }
 
         public void RemoveDb()

@@ -11,7 +11,7 @@ using System.Linq;
 namespace PersistenceFramework.DbContextTest.UnitTest
 {
     [TestClass]
-    public class MockMongoDbContextTest
+    public class MockMongoDbContextOughtTo
     {
         private IDbContext DbMock;
 
@@ -87,6 +87,22 @@ namespace PersistenceFramework.DbContextTest.UnitTest
         }
 
         [TestMethod]
+        public void AddEntityList_Entity_Success()
+        {
+            DbMock = new MongoDbContext();
+            DbMock.Add<InfoEntity>(Enumerable.Range(0, 4).Select(x => new InfoEntity
+            {
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            }).ToList());
+            IEnumerable<InfoEntity> populatedMyEntitites = DbMock.GetEntity<InfoEntity>(x => true).ToList();
+            Assert.AreEqual(populatedMyEntitites.Count(), 4);
+        }
+
+        [TestMethod]
         public void DeleteEntity_Entity_Success()
         {
             DbMock = new MongoDbContext(false);
@@ -123,6 +139,52 @@ namespace PersistenceFramework.DbContextTest.UnitTest
         }
 
         [TestMethod]
+        public void DeleteEntityUsingExpression_Entity_Success()
+        {
+            DbMock = new MongoDbContext(false);
+            InfoEntity infoEntity00 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5c89c3b00000000000000000"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client00@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+            InfoEntity infoEntity01 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5c89c3212000000000000000"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client01@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+            InfoEntity infoEntity02 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5ed6af61b7f0c68829022ebc"),
+                Guid = Guid.Parse("EBDB974B-291B-460A-9F43-871734958676"),
+                Email = "client02@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+            DbMock.Add(infoEntity00);
+            DbMock.Add(infoEntity01);
+            DbMock.Add(infoEntity02);
+
+            #region Remove Element
+            DbMock.Remove<InfoEntity>(x => x.Guid == Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"));
+            #endregion
+
+            #region Assert condition
+            InfoEntity[] infoEntities = DbMock.GetEntity<InfoEntity>(x => true).ToArray();
+            Assert.AreEqual(infoEntities.Length, 1);
+            Assert.AreEqual(infoEntities[0].Email, "client02@google.com");
+            #endregion
+        }
+
+        [TestMethod]
         public void UpdateEntity_Entity_Success()
         {
             DbMock = new MongoDbContext(false);
@@ -136,16 +198,88 @@ namespace PersistenceFramework.DbContextTest.UnitTest
                 Phone = "+589 93 956 487"
             };
 
+            InfoEntity infoEntityUpdated = new InfoEntity
+            {
+                Id = ObjectId.Parse("5c89c3b00000000000000000"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "dev@microsoft.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+
             DbMock.Add(infoEntity);
-            infoEntity.Email = "dev@microsoft.com";
 
             #region Update element
-            DbMock.Update(infoEntity);
+            DbMock.Update(infoEntityUpdated);
             #endregion
 
             #region Assert Condition
             InfoEntity retrieveInfoEntity = DbMock.GetEntity<InfoEntity>(x => true).FirstOrDefault();
             Assert.AreEqual(retrieveInfoEntity.Email, "dev@microsoft.com");
+            #endregion
+        }
+
+        [TestMethod]
+        public void UpdateEntityWithLambda_Entity_Success()
+        {
+            DbMock = new MongoDbContext(false);
+            InfoEntity infoEntity0 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5c89c3b00000000000000000"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client00@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+
+            InfoEntity infoEntity1 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5ed6d96899609a85c65afac4"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client01@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+
+            InfoEntity infoEntity2 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5ed6d96dfdeac5b2c020f33c"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client02@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+
+            InfoEntity infoEntity3 = new InfoEntity
+            {
+                Id = ObjectId.Parse("5ed6d971ee98f12b87cec7fa"),
+                Guid = Guid.Parse("3ABCC35E-D5EF-4514-B913-6D501C301AC0"),
+                Email = "client04@google.com",
+                Name = "cName",
+                Lastname = "cLastname",
+                Phone = "+589 93 956 487"
+            };
+
+            DbMock.Add(infoEntity0);
+            DbMock.Add(infoEntity1);
+            DbMock.Add(infoEntity2);
+
+            #region Update element
+            DbMock.Update(x => x.Email == "client00@google.com", infoEntity3);
+            #endregion
+
+            #region Assert Condition
+            InfoEntity retrieveRemovedInfoEntity = 
+                DbMock.GetEntity<InfoEntity>(x => x.Email == "client00@google.com").
+                FirstOrDefault();
+            InfoEntity retrieveInfoEntity = DbMock.GetEntity<InfoEntity>(x => x.Email == "client04@google.com").
+                FirstOrDefault();
+            Assert.IsNull(retrieveRemovedInfoEntity);
+            Assert.AreEqual("client04@google.com", retrieveInfoEntity.Email);
             #endregion
         }
     }

@@ -45,6 +45,12 @@
     <Compile Include="DynamicLambdaBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PersistenceFramework.Exceptions\PersistenceFramework.Exceptions.csproj">
+      <Project>{12456A34-88D2-465C-8404-8C8CC14CC6AD}</Project>
+      <Name>PersistenceFramework.Exceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>IF ($(ConfigurationName)) == (Release) GOTO RELEASE
