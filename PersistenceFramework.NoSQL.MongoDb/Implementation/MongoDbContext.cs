@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
+using PersistenceFramework.Abstractions.NoSQL.MongoDb;
 using PersistenceFramework.Attributes;
-using PersistenceFramework.Contract;
 using PersistenceFramework.Exceptions;
 using PersistenceFramework.Util;
 using System;
@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 
 namespace PersistenceFramework.NoSQL.MongoDb.Implementation
 {
-    public class MongoDbContext : IDbContext
+    public class MongoDbContext : IMongoDbContext
     {
         private IMongoClient MongoClient { get; set; }
         private IMongoDatabase MongoDatabase { get; set; }
@@ -141,6 +142,16 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
             return mongoCollection.AsQueryable();
+        }
+
+        public IAggregateFluent<TEntity> Aggregate<TEntity>(AggregateOptions options = default)
+        {
+            return ((IMongoCollection<TEntity>)GetList(typeof(TEntity))).Aggregate(options);
+        }
+
+        public IAsyncCursor<TResult> Aggregate<TEntity, TResult>(PipelineDefinition<TEntity, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default)
+        {
+            return ((IMongoCollection<TEntity>)GetList(typeof(TEntity))).Aggregate(pipeline, options, cancellationToken);
         }
     }
 }

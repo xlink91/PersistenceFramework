@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenceFramework.Util",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenceFramework.Attributes", "PersistenceFramework.Attributes\PersistenceFramework.Attributes.csproj", "{5FB66741-366D-49BC-BF8E-BFBA7AE8FFDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistenceFramework.Abstractions.NoSQL.MongoDb", "PersistenceFramework.Abstractions.NoSQL.MongoDb\PersistenceFramework.Abstractions.NoSQL.MongoDb.csproj", "{3FC1281F-F524-4ABD-9F2A-55187D2A6858}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{5FB66741-366D-49BC-BF8E-BFBA7AE8FFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB66741-366D-49BC-BF8E-BFBA7AE8FFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FB66741-366D-49BC-BF8E-BFBA7AE8FFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC1281F-F524-4ABD-9F2A-55187D2A6858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC1281F-F524-4ABD-9F2A-55187D2A6858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC1281F-F524-4ABD-9F2A-55187D2A6858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC1281F-F524-4ABD-9F2A-55187D2A6858}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{DF4965B2-F20E-4EB1-BABA-A61634CA7D3F} = {88E64686-6C54-41E4-B5A0-7B4B0C7E9E5D}
 		{ADAC77CC-662B-4229-8E2E-CF8AF4FF50F1} = {5C8FAA30-3EEF-4FE3-979F-E75A9AB123FC}
 		{5FB66741-366D-49BC-BF8E-BFBA7AE8FFDE} = {C1B5FCA5-0034-43A9-9066-16978CFD6D43}
+		{3FC1281F-F524-4ABD-9F2A-55187D2A6858} = {6CB70622-40BE-41AF-A814-F0CA48205189}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A2E7C27-89E2-485E-AA59-8CFF0BE6F938}
