@@ -87,5 +87,19 @@ namespace PersistenceFramework.Util
 
             return idProperty;
         }
+
+        public static Expression<Func<TEntity, bool>> CreateFilterForCollection<TEntity, TResult>(
+                                                        Expression<Func<TEntity, TResult>> filter, TEntity value)
+        {
+            var unaryExpression = filter.Body as MemberExpression;
+            var leftExpression = unaryExpression;
+            var rightExpression = Expression.Constant(filter.Compile()(value));
+            var body = Expression.MakeBinary(ExpressionType.Equal, leftExpression, rightExpression);
+
+            Expression<Func<TEntity, bool>> final_expression = 
+                Expression.Lambda<Func<TEntity, bool>>(body, filter.Parameters[0]);
+
+            return final_expression;
+        }
     }
 }

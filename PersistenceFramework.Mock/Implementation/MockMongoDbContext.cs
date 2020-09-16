@@ -157,5 +157,25 @@ namespace PersistenceFramework.Mock.NoSQL.MongoDb
             }
             UpdateCollection(typeof(TEntity), nCollection);
         }
+
+        public void AddAsTransaction<TEntity>(IEnumerable<TEntity> entityList) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAsTransaction<TEntity, TResult>(IEnumerable<TEntity> entityList, Expression<Func<TEntity, TResult>> filter) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAsTransaction<TEntity>(IEnumerable<TEntity> entityList) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAsTransaction<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
     }
 }

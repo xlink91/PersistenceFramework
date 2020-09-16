@@ -3,6 +3,8 @@ using MongoDB.Bson.Serialization.Attributes;
 using PersistenceFramework.Attributes;
 using PersistenceFramework.Exceptions;
 using PersistenceFramework.Util;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace PersistenceFramework.DbContextTest.UnitTest
@@ -52,6 +54,43 @@ namespace PersistenceFramework.DbContextTest.UnitTest
             var memberExpression = (MemberExpression)binaryExpression.Left;
 
             Assert.AreEqual("Id", memberExpression.Member.Name);
+        }
+
+        [TestMethod]
+        public void CreateFilterForCollection_TakeAFilterExpression_And_Return_ABooleanExpression()
+        {
+            IEnumerable<InfoEntity> infoEntityList
+                = Enumerable
+                    .Range(1, 10)
+                    .Select(x => new InfoEntity
+                    {
+                        Lastname = $"__lastname{x}"
+                    })
+                    .ToList();
+            
+            var expression1 = DynamicLambdaBuilder
+                                .CreateFilterForCollection<InfoEntity, string>(
+                                    x => x.Lastname, 
+                                    infoEntityList.ElementAt(0)
+                                );
+
+            Assert.AreEqual(((expression1.Body as BinaryExpression).Right as ConstantExpression).Value, "__lastname1");
+
+            var expression2 = DynamicLambdaBuilder
+                                .CreateFilterForCollection<InfoEntity, string>(
+                                    x => x.Lastname, 
+                                    infoEntityList.ElementAt(3)
+                                );
+
+            Assert.AreEqual(((expression2.Body as BinaryExpression).Right as ConstantExpression).Value, "__lastname4");
+
+            var expression3 = DynamicLambdaBuilder
+                                .CreateFilterForCollection<InfoEntity, string>(
+                                    x => x.Lastname, 
+                                    infoEntityList.ElementAt(6)
+                                );
+
+            Assert.AreEqual(((expression3.Body as BinaryExpression).Right as ConstantExpression).Value, "__lastname7");
         }
     }
 

@@ -153,5 +153,37 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
         {
             return ((IMongoCollection<TEntity>)GetList(typeof(TEntity))).Aggregate(pipeline, options, cancellationToken);
         }
+
+        public void AddAsTransaction<TEntity>(IEnumerable<TEntity> entityList) where TEntity : class
+        {
+            IMongoCollection<TEntity> entityCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            IClientSessionHandle clientSessionHandler = MongoDatabase.Client.StartSession();
+            entityCollection.WithWriteConcern(WriteConcern.Acknowledged)
+                .InsertMany(clientSessionHandler, entityList);
+        }
+
+        public void UpdateAsTransaction<TEntity, TResult>(IEnumerable<TEntity> entityList,
+            Expression<Func<TEntity, TResult>> filter)
+                    where TEntity : class
+        {
+            IMongoCollection<TEntity> mongoCollection =
+                (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            IClientSessionHandle clientSessionHandler = MongoDatabase.Client.StartSession();
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged)
+                                                .BulkWrite(clientSessionHandler,
+                                                            entityList
+                                                            .Select(entity => new ReplaceOneModel<TEntity>(
+                                                                    DynamicLambdaBuilder
+                                                                    .CreateFilterForCollection(filter, entity), entity)));
+        }
+
+        public void RemoveAsTransaction<TEntity>(Expression<Func<TEntity, bool>> filter) 
+            where TEntity : class
+        {
+            IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            IClientSessionHandle clientSessionHandler = MongoDatabase.Client.StartSession();
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged)
+                            .DeleteMany(clientSessionHandler, filter);
+        }
     }
 }

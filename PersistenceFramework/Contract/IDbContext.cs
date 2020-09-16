@@ -23,5 +23,12 @@ namespace PersistenceFramework.Contract
             where TEntity : class;
         IQueryable<TEntity> AsQueryable<TEntity>()
             where TEntity: class;
+        void AddAsTransaction<TEntity>(IEnumerable<TEntity> entityList)
+            where TEntity : class;
+        void UpdateAsTransaction<TEntity, TResult>(IEnumerable<TEntity> entityList,
+            Expression<Func<TEntity, TResult>> filter)
+            where TEntity : class;
+        void RemoveAsTransaction<TEntity>(Expression<Func<TEntity, bool>> filter)
+            where TEntity : class;
     }
 }
