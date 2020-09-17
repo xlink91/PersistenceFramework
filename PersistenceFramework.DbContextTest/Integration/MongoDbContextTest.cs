@@ -5,6 +5,7 @@ using PersistenceFramework.NoSQL.MongoDb.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -72,11 +73,44 @@ namespace PersistenceFramework.DbContextTest.Integration
                                                 ;
             db.UpdateAsTransaction(qr, x => x.Id);
         }
-        
+
+        //[TestMethod]
+        //public void Remove_As_Transaction()
+        //{
+        //    CustomMongoDbContext db = new CustomMongoDbContext("PFrameworkTest", "localhost:27017");
+        //}
+
+        //TODO: Make a put out this unit test from integration part, also make it usefull with some real constraint
         [TestMethod]
-        public void Remove_As_Transaction()
+        public void CreateUpdateDefinition_Return_UpdateDefinition()
         {
-            CustomMongoDbContext db = new CustomMongoDbContext("PFrameworkTest", "localhost:27017");
+            IList<(string op, (Expression<Func<Info, object>> property, object value) updateInfo)> operations =
+                new List<(string op, (Expression<Func<Info, object>> property, object value) updateInfo)>();
+
+            Expression<Func<Info, object>> property = x => x.Data;
+            string dataValue = "changedValue";
+
+            operations.Add((MongoDbUpdateDefinitions.SET, (property, dataValue)));
+            UpdateDefinition<Info> updateDefinition = MongoDbContextUtils.CreateUpdateDefinition(operations);
+
+            Assert.AreNotEqual(default, updateDefinition);
+        }
+
+        [TestMethod]
+        public void UpdateDefinition_UpdateValue()
+        {
+            CustomMongoDbContext db = new CustomMongoDbContext("PFrameworkTest", "192.168.250.132:27017");
+
+            IList<(string op, (Expression<Func<Info, object>> property, object value) updateInfo)> operations =
+                new List<(string op, (Expression<Func<Info, object>> property, object value) updateInfo)>();
+
+            Expression<Func<Info, object>> property = x => x.Data;
+            string dataValue = "changedValue_1";
+
+            operations.Add((MongoDbUpdateDefinitions.SET, (property, dataValue)));
+            
+            bool result = db.UpdateSetAsTransaction<Info>(x => x.Id == ObjectId.Parse("5f625c904d053f8d533a6ed0")  ||
+                x.Id == ObjectId.Parse("5f625c904d053f8d533a6ed1"), operations);
         }
     }
 

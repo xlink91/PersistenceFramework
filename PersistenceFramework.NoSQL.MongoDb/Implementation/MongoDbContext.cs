@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using static PersistenceFramework.NoSQL.MongoDb.Implementation.MongoDbContextUtils;
 using PersistenceFramework.Abstractions.NoSQL.MongoDb;
 using PersistenceFramework.Attributes;
 using PersistenceFramework.Exceptions;
@@ -14,8 +15,8 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
 {
     public class MongoDbContext : IMongoDbContext
     {
-        private IMongoClient MongoClient { get; set; }
-        private IMongoDatabase MongoDatabase { get; set; }
+        public IMongoClient MongoClient { get; set; }
+        public IMongoDatabase MongoDatabase { get; set; }
         private string DatabaseName { get; set; }
         
         public MongoDbContext(string databaseName, string url)
@@ -184,6 +185,17 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             IClientSessionHandle clientSessionHandler = MongoDatabase.Client.StartSession();
             mongoCollection.WithWriteConcern(WriteConcern.Acknowledged)
                             .DeleteMany(clientSessionHandler, filter);
+        }
+
+        public bool UpdateSetAsTransaction<TEntity>(Expression<Func<TEntity, bool>> filter,
+            IList<(string, (Expression<Func<TEntity, object>> property, object value))> operations)
+        {
+            IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
+            UpdateDefinition<TEntity> updateDefinition = CreateUpdateDefinition<TEntity>(operations);
+            IClientSessionHandle clientSessionHandler = MongoDatabase.Client.StartSession();
+            UpdateResult updateResult = mongoCollection.WithWriteConcern(WriteConcern.Acknowledged)
+                            .UpdateMany(clientSessionHandler, filter, updateDefinition);
+            return updateResult.ModifiedCount != 0;
         }
     }
 }
