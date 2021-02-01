@@ -107,7 +107,7 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
-            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(DynamicLambdaBuilder.GetIdLE(entity), entity);
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).ReplaceOne(DynamicLambdaBuilder.GetIdLE(entity, typeof(PersistenceIdAttribute)), entity);
         }
 
         public void Update<TEntity>(Expression<Func<TEntity, bool>> cond, TEntity entity)
@@ -123,7 +123,8 @@ namespace PersistenceFramework.NoSQL.MongoDb.Implementation
             where TEntity : class
         {
             IMongoCollection<TEntity> mongoCollection = (IMongoCollection<TEntity>)GetCollection(typeof(TEntity));
-            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged).DeleteOne(DynamicLambdaBuilder.GetIdLE(entity, typeof(PersistenceIdAttribute)));
+            mongoCollection.WithWriteConcern(WriteConcern.Acknowledged)
+                .DeleteOne(DynamicLambdaBuilder.GetIdLE(entity, typeof(PersistenceIdAttribute)));
         }
 
         public void Remove<TEntity>(Expression<Func<TEntity, bool>> cond)
